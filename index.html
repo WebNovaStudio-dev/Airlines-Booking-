@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SkyBound | Travel Beyond Limits</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            400: '#60a5fa',
+                            500: '#3b82f6',
+                            600: '#2563eb',
+                            700: '#1d4ed8',
+                        }
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'glow': 'pulseGlow 4s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0px)' },
+                            '50%': { transform: 'translateY(-8px)' },
+                        },
+                        pulseGlow: {
+                            '0%, 100%': { opacity: '0.3' },
+                            '50%': { opacity: '0.6' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        .glass-nav {
+            background: rgba(10, 15, 29, 0.85);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+        }
+        .hero-surface {
+            background: linear-gradient(180deg, rgba(10, 15, 29, 0.65) 0%, rgba(10, 15, 29, 0.98) 100%), 
+                        url('https://images.unsplash.com/photo-1508873696983-2df5703bc20d?auto=format&fit=crop&q=80&w=2000');
+            background-size: cover;
+            background-position: center;
+        }
+        .reveal-element {
+            opacity: 0;
+            transform: translateY(24px);
+            transition: all 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .reveal-element.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body class="bg-[#070b14] text-slate-100 antialiased selection:bg-blue-600 selection:text-white">
+
+    <!-- Ambient Glow FX -->
+    <div class="fixed top-0 left-1/2 -translate-x-1/2 w-[700px] h-[350px] bg-blue-600/15 blur-[140px] pointer-events-none -z-10 animate-glow"></div>
+
+    <!-- 1. Navigation -->
+    <nav class="fixed w-full z-50 glass-nav border-b border-white/10 transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="#" class="flex items-center gap-2.5 font-extrabold text-2xl tracking-tight text-white group">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-blue-600 to-cyan-400 flex items-center justify-center text-white shadow-lg shadow-blue-500/25 group-hover:scale-105 transition-transform">
+                    <i data-lucide="plane" class="w-5 h-5 -rotate-45"></i>
+                </div>
+                <span>Sky<span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400">Bound</span></span>
+            </a>
+
+            <!-- Desktop Navigation Links -->
+            <div class="hidden lg:flex items-center gap-7 font-medium text-slate-300 text-sm">
+                <a href="#" class="hover:text-blue-400 transition-colors">Home</a>
+                <a href="#destinations" class="hover:text-blue-400 transition-colors">Destinations</a>
+                <a href="#experience" class="hover:text-blue-400 transition-colors">Experience</a>
+                <a href="#reviews" class="hover:text-blue-400 transition-colors">Reviews</a>
+                <a href="#about" class="hover:text-blue-400 transition-colors">About</a>
+                <a href="#concierge" class="hover:text-blue-400 transition-colors">Concierge</a>
+            </div>
+
+            <div class="hidden lg:flex items-center">
+                <a href="#booking" class="bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-500 hover:to-cyan-400 text-white font-semibold text-sm px-6 py-2.5 rounded-full shadow-lg shadow-blue-500/20 active:scale-95 transition">
+                    Book a Flight
+                </a>
+            </div>
+
+            <!-- Mobile Menu Toggle Button -->
+            <button id="mobileMenuBtn" aria-label="Toggle Menu" class="lg:hidden p-2 text-slate-300 hover:text-white focus:outline-none">
+                <i data-lucide="menu" id="menuIcon" class="w-6 h-6"></i>
+            </button>
+        </div>
+
+        <!-- Mobile Drawer -->
+        <div id="mobileMenu" class="hidden lg:hidden px-6 pt-3 pb-6 border-t border-white/10 bg-[#0a0f1d]/95 backdrop-blur-xl">
+            <div class="flex flex-col gap-3 font-medium text-slate-300">
+                <a href="#" class="mobile-link py-2 hover:text-blue-400">Home</a>
+                <a href="#destinations" class="mobile-link py-2 hover:text-blue-400">Destinations</a>
+                <a href="#experience" class="mobile-link py-2 hover:text-blue-400">Experience</a>
+                <a href="#reviews" class="mobile-link py-2 hover:text-blue-400">Reviews</a>
+                <a href="#about" class="mobile-link py-2 hover:text-blue-400">About</a>
+                <a href="#concierge" class="mobile-link py-2 hover:text-blue-400">Concierge</a>
+                <a href="#booking" class="mobile-link w-full text-center bg-blue-600 text-white font-semibold py-3 rounded-xl mt-2">
+                    Book a Flight
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 2. Hero Section -->
+    <header class="relative min-h-screen pt-32 pb-20 flex items-center justify-center hero-surface text-white px-6">
+        <div class="max-w-5xl mx-auto text-center relative z-10">
+            <span class="inline-block px-4 py-1.5 rounded-full bg-blue-500/10 border border-blue-500/30 text-xs font-bold uppercase tracking-widest text-blue-400 mb-6">
+                PREMIUM GLOBAL AIR TRAVEL
+            </span>
+            
+            <h1 class="text-4xl sm:text-6xl md:text-7xl font-extrabold mb-6 tracking-tight leading-[1.15]">
+                Travel Beyond the Ordinary.
+            </h1>
+            
+            <p class="text-base sm:text-lg md:text-xl mb-10 text-slate-300 max-w-2xl mx-auto font-light leading-relaxed">
+                Seamless journeys, exceptional comfort, and personalized service across the world's most remarkable destinations.
+            </p>
+            
+            <div class="flex flex-wrap items-center justify-center gap-4 mb-10">
+                <a href="#booking" class="bg-blue-600 hover:bg-blue-500 text-white font-semibold px-8 py-3.5 rounded-xl shadow-lg shadow-blue-600/30 transition">Search Flights</a>
+                <a href="#destinations" class="border border-white/20 hover:bg-white/10 text-white font-semibold px-8 py-3.5 rounded-xl transition">Explore Destinations</a>
+            </div>
+
+            <p class="text-xs sm:text-sm text-slate-400 font-medium tracking-wide">
+                150+ Global Destinations · 24/7 Concierge · Premium Travel Experience
+            </p>
+
+            <!-- 3. Booking Widget -->
+            <div id="booking" class="mt-12 bg-white/10 backdrop-blur-2xl p-5 sm:p-6 rounded-3xl border border-white/15 shadow-2xl text-left">
+                <div class="flex gap-4 mb-4">
+                    <button type="button" class="text-xs font-bold uppercase tracking-wider text-blue-400 bg-blue-500/20 px-4 py-1.5 rounded-full border border-blue-400/40">Round Trip</button>
+                    <button type="button" class="text-xs font-bold uppercase tracking-wider text-slate-400 hover:text-white px-4 py-1.5 transition">One Way</button>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-3">
+                    <div class="bg-slate-900/90 rounded-2xl p-3 border border-white/10">
+                        <label class="block text-[11px] font-bold text-slate-400 uppercase tracking-wider">From</label>
+                        <input type="text" value="New York (JFK)" class="bg-transparent outline-none text-white text-sm font-semibold w-full mt-1">
+                    </div>
+                    <div class="bg-slate-900/90 rounded-2xl p-3 border border-white/10">
+                        <label class="block text-[11px] font-bold text-slate-400 uppercase tracking-wider">To</label>
+                        <input type="text" value="Tokyo (HND)" class="bg-transparent outline-none text-white text-sm font-semibold w-full mt-1">
+                    </div>
+                    <div class="bg-slate-900/90 rounded-2xl p-3 border border-white/10">
+                        <label class="block text-[11px] font-bold text-slate-400 uppercase tracking-wider">Departure</label>
+                        <input type="date" value="2026-10-15" class="bg-transparent outline-none text-white text-xs sm:text-sm font-semibold w-full mt-1 cursor-pointer">
+                    </div>
+                    <div class="bg-slate-900/90 rounded-2xl p-3 border border-white/10">
+                        <label class="block text-[11px] font-bold text-slate-400 uppercase tracking-wider">Return</label>
+                        <input type="date" value="2026-10-25" class="bg-transparent outline-none text-white text-xs sm:text-sm font-semibold w-full mt-1 cursor-pointer">
+                    </div>
+                    <div class="bg-slate-900/90 rounded-2xl p-3 border border-white/10">
+                        <label class="block text-[11px] font-bold text-slate-400 uppercase tracking-wider">Travelers</label>
+                        <select class="bg-transparent outline-none text-white text-sm font-semibold w-full mt-1 cursor-pointer [&>option]:bg-slate-900">
+                            <option>1 Adult</option>
+                            <option>2 Adults</option>
+                            <option>Family (3+)</option>
+                        </select>
+                    </div>
+                    <div class="bg-slate-900/90 rounded-2xl p-3 border border-white/10">
+                        <label class="block text-[11px] font-bold text-slate-400 uppercase tracking-wider">Cabin</label>
+                        <select class="bg-transparent outline-none text-white text-sm font-semibold w-full mt-1 cursor-pointer [&>option]:bg-slate-900">
+                            <option>Business Class</option>
+                            <option>First Class</option>
+                            <option>Economy Class</option>
+                        </select>
+                    </div>
+                </div>
+                <button class="mt-4 w-full bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-500 hover:to-cyan-400 text-white font-bold py-3.5 rounded-xl transition shadow-lg shadow-blue-500/25 flex items-center justify-center gap-2">
+                    <i data-lucide="search" class="w-4 h-4"></i>
+                    <span>Search Flights</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- 4. Trust Statistics -->
+    <section class="py-16 bg-[#0a0f1d] border-y border-white/5">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+                <div class="reveal-element">
+                    <p class="text-3xl sm:text-4xl font-extrabold text-blue-400">150+</p>
+                    <p class="text-slate-400 text-sm mt-1">Global Destinations</p>
+                </div>
+                <div class="reveal-element">
+                    <p class="text-3xl sm:text-4xl font-extrabold text-cyan-400">24/7</p>
+                    <p class="text-slate-400 text-sm mt-1">Concierge Support</p>
+                </div>
+                <div class="reveal-element">
+                    <p class="text-3xl sm:text-4xl font-extrabold text-blue-400">4.9/5</p>
+                    <p class="text-slate-400 text-sm mt-1">Traveler Rating</p>
+                </div>
+                <div class="reveal-element">
+                    <p class="text-3xl sm:text-4xl font-extrabold text-cyan-400">2M+</p>
+                    <p class="text-slate-400 text-sm mt-1">Journeys Worldwide</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 5. Why SkyBound -->
+    <section id="about" class="py-24 max-w-7xl mx-auto px-6">
+        <div class="text-center mb-16 reveal-element">
+            <span class="text-xs font-bold uppercase tracking-widest text-blue-400 bg-blue-500/10 px-4 py-1.5 rounded-full border border-blue-500/20">THE SKYBOUND EXPERIENCE</span>
+            <h2 class="text-3xl sm:text-5xl font-extrabold text-white mt-4 mb-4">Travel Designed Around You</h2>
+            <p class="text-slate-400 max-w-2xl mx-auto text-sm sm:text-base leading-relaxed">
+                From effortless booking to personalized service in the air, every detail is designed to make your journey smoother, more comfortable, and more memorable.
+            </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div class="reveal-element p-7 rounded-3xl bg-slate-900/50 border border-white/10 hover:border-blue-500/40 transition-all duration-300">
+                <div class="w-12 h-12 bg-blue-500/10 text-blue-400 rounded-xl flex items-center justify-center mb-5"><i data-lucide="shield-check" class="w-6 h-6"></i></div>
+                <h3 class="text-lg font-bold text-white mb-2">Premium Safety</h3>
+                <p class="text-slate-400 text-sm leading-relaxed">Advanced safety systems and modern aviation technology designed to keep every journey secure.</p>
+            </div>
+            <div class="reveal-element p-7 rounded-3xl bg-slate-900/50 border border-white/10 hover:border-blue-500/40 transition-all duration-300">
+                <div class="w-12 h-12 bg-blue-500/10 text-blue-400 rounded-xl flex items-center justify-center mb-5"><i data-lucide="wifi" class="w-6 h-6"></i></div>
+                <h3 class="text-lg font-bold text-white mb-2">Global Connectivity</h3>
+                <p class="text-slate-400 text-sm leading-relaxed">Stay connected wherever you travel with high-speed onboard connectivity and seamless digital access.</p>
+            </div>
+            <div class="reveal-element p-7 rounded-3xl bg-slate-900/50 border border-white/10 hover:border-blue-500/40 transition-all duration-300">
+                <div class="w-12 h-12 bg-blue-500/10 text-blue-400 rounded-xl flex items-center justify-center mb-5"><i data-lucide="utensils" class="w-6 h-6"></i></div>
+                <h3 class="text-lg font-bold text-white mb-2">Fine Dining</h3>
+                <p class="text-slate-400 text-sm leading-relaxed">Enjoy thoughtfully curated menus and premium dining experiences designed for every journey.</p>
+            </div>
+            <div class="reveal-element p-7 rounded-3xl bg-slate-900/50 border border-white/10 hover:border-blue-500/40 transition-all duration-300">
+                <div class="w-12 h-12 bg-blue-500/10 text-blue-400 rounded-xl flex items-center justify-center mb-5"><i data-lucide="armchair" class="w-6 h-6"></i></div>
+                <h3 class="text-lg font-bold text-white mb-2">Private Suites</h3>
+                <p class="text-slate-400 text-sm leading-relaxed">Relax with spacious seating, enhanced privacy, and premium comfort throughout your flight.</p>
+            </div>
+            <div class="reveal-element p-7 rounded-3xl bg-slate-900/50 border border-white/10 hover:border-blue-500/40 transition-all duration-300">
+                <div class="w-12 h-12 bg-blue-500/10 text-blue-400 rounded-xl flex items-center justify-center mb-5"><i data-lucide="headset" class="w-6 h-6"></i></div>
+                <h3 class="text-lg font-bold text-white mb-2">24/7 Concierge</h3>
+                <p class="text-slate-400 text-sm leading-relaxed">Dedicated assistance before, during, and after your journey whenever you need it.</p>
+            </div>
+            <div class="reveal-element p-7 rounded-3xl bg-slate-900/50 border border-white/10 hover:border-blue-500/40 transition-all duration-300">
+                <div class="w-12 h-12 bg-blue-500/10 text-blue-400 rounded-xl flex items-center justify-center mb-5"><i data-lucide="leaf" class="w-6 h-6"></i></div>
+                <h3 class="text-lg font-bold text-white mb-2">Sustainable Travel</h3>
+                <p class="text-slate-400 text-sm leading-relaxed">Discover more efficient ways to travel with modern aircraft and sustainability-focused initiatives.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 6. Experience Section -->
+    <section id="experience" class="py-24 bg-[#0a0f1d]/70 border-y border-white/5">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <div class="reveal-element">
+                    <span class="text-xs font-bold uppercase tracking-widest text-cyan-400 bg-cyan-500/10 px-4 py-1.5 rounded-full border border-cyan-500/20">MORE THAN A FLIGHT</span>
+                    <h2 class="text-3xl sm:text-5xl font-extrabold text-white mt-4 mb-4">Designed Around Your Journey</h2>
+                    <p class="text-slate-400 text-base leading-relaxed mb-8">
+                        Your journey should feel effortless from the moment you leave home to the moment you arrive.
+                    </p>
+                    
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-8">
+                        <div>
+                            <h4 class="font-bold text-white text-base mb-1 flex items-center gap-2"><i data-lucide="check" class="text-blue-400 w-4 h-4"></i> Private Comfort</h4>
+                            <p class="text-slate-400 text-xs sm:text-sm">Space to relax, work, and unwind.</p>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-white text-base mb-1 flex items-center gap-2"><i data-lucide="check" class="text-blue-400 w-4 h-4"></i> Curated Dining</h4>
+                            <p class="text-slate-400 text-xs sm:text-sm">Thoughtfully prepared meals for every journey.</p>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-white text-base mb-1 flex items-center gap-2"><i data-lucide="check" class="text-blue-400 w-4 h-4"></i> Personal Concierge</h4>
+                            <p class="text-slate-400 text-xs sm:text-sm">Personalized assistance whenever you need it.</p>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-white text-base mb-1 flex items-center gap-2"><i data-lucide="check" class="text-blue-400 w-4 h-4"></i> Seamless Transfers</h4>
+                            <p class="text-slate-400 text-xs sm:text-sm">A smoother journey from departure to destination.</p>
+                        </div>
+                    </div>
+
+                    <a href="#concierge" class="inline-flex items-center gap-2 text-sm font-bold bg-blue-600 hover:bg-blue-500 text-white px-6 py-3 rounded-xl transition">
+                        Discover the SkyBound Experience <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                    </a>
+                </div>
+
+                <div class="reveal-element relative">
+                    <img src="https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&q=80&w=1000" alt="Cabin experience" class="rounded-3xl border border-white/10 shadow-2xl object-cover w-full h-[440px]">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 7. Journey Process -->
+    <section class="py-24 max-w-7xl mx-auto px-6">
+        <div class="text-center mb-16 reveal-element">
+            <span class="text-xs font-bold uppercase tracking-widest text-blue-400 bg-blue-500/10 px-4 py-1.5 rounded-full border border-blue-500/20">YOUR JOURNEY, SIMPLIFIED</span>
+            <h2 class="text-3xl sm:text-5xl font-extrabold text-white mt-4">From Plan to Arrival</h2>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div class="reveal-element p-6 rounded-3xl bg-slate-900/40 border border-white/10 relative">
+                <span class="text-3xl font-extrabold text-blue-500/30 block mb-2">01</span>
+                <h3 class="text-lg font-bold text-white mb-2">Plan</h3>
+                <p class="text-slate-400 text-xs leading-relaxed">Tell us where you're going and when you want to travel.</p>
+            </div>
+            <div class="reveal-element p-6 rounded-3xl bg-slate-900/40 border border-white/10 relative">
+                <span class="text-3xl font-extrabold text-blue-500/30 block mb-2">02</span>
+                <h3 class="text-lg font-bold text-white mb-2">Personalize</h3>
+                <p class="text-slate-400 text-xs leading-relaxed">Choose your cabin, preferences, dining options, and additional services.</p>
+            </div>
+            <div class="reveal-element p-6 rounded-3xl bg-slate-900/40 border border-white/10 relative">
+                <span class="text-3xl font-extrabold text-blue-500/30 block mb-2">03</span>
+                <h3 class="text-lg font-bold text-white mb-2">Fly</h3>
+                <p class="text-slate-400 text-xs leading-relaxed">Settle in, stay connected, and enjoy a comfortable journey above the clouds.</p>
+            </div>
+            <div class="reveal-element p-6 rounded-3xl bg-slate-900/40 border border-white/10 relative">
+                <span class="text-3xl font-extrabold text-blue-500/30 block mb-2">04</span>
+                <h3 class="text-lg font-bold text-white mb-2">Arrive</h3>
+                <p class="text-slate-400 text-xs leading-relaxed">Continue your journey with seamless assistance and concierge support.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 8. Destinations Section -->
+    <section id="destinations" class="py-24 bg-[#0a0f1d]/70 border-y border-white/5">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-16 reveal-element">
+                <span class="text-xs font-bold uppercase tracking-widest text-blue-400 bg-blue-500/10 px-4 py-1.5 rounded-full border border-blue-500/20">CURATED GETAWAYS</span>
+                <h2 class="text-3xl sm:text-5xl font-extrabold text-white mt-4 mb-2">Explore the World</h2>
+                <p class="text-slate-400 text-sm sm:text-base">Discover remarkable destinations with carefully selected routes and premium travel experiences.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+                <!-- London -->
+                <div class="reveal-element group bg-slate-900 rounded-3xl overflow-hidden border border-white/10 hover:border-blue-500/50 transition duration-300">
+                    <div class="relative h-56 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?auto=format&fit=crop&w=800&q=80" alt="London, United Kingdom" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                        <span class="absolute top-4 left-4 bg-slate-950/80 backdrop-blur-md text-xs font-semibold px-3 py-1 rounded-full text-slate-300">Europe</span>
+                    </div>
+                    <div class="p-6">
+                        <h4 class="text-xl font-bold text-white mb-1">London, United Kingdom</h4>
+                        <p class="text-slate-400 text-xs font-medium mb-3">JFK → LHR · 7h 10m · Nonstop</p>
+                        <div class="flex items-center justify-between mt-6">
+                            <span class="text-sm font-bold text-blue-400">From $499 <span class="text-xs text-slate-500 font-normal">/ seat</span></span>
+                            <a href="#booking" class="text-xs font-bold bg-white/10 hover:bg-blue-600 px-4 py-2 rounded-xl transition">Explore Route</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tokyo -->
+                <div class="reveal-element group bg-slate-900 rounded-3xl overflow-hidden border border-white/10 hover:border-cyan-500/50 transition duration-300">
+                    <div class="relative h-56 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1503899036084-c55cdd92da26?auto=format&fit=crop&w=800&q=80" alt="Tokyo, Japan" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                        <span class="absolute top-4 left-4 bg-slate-950/80 backdrop-blur-md text-xs font-semibold px-3 py-1 rounded-full text-slate-300">Asia</span>
+                    </div>
+                    <div class="p-6">
+                        <h4 class="text-xl font-bold text-white mb-1">Tokyo, Japan</h4>
+                        <p class="text-slate-400 text-xs font-medium mb-3">JFK → HND · 14h 05m · Nonstop</p>
+                        <div class="flex items-center justify-between mt-6">
+                            <span class="text-sm font-bold text-cyan-400">From $720 <span class="text-xs text-slate-500 font-normal">/ seat</span></span>
+                            <a href="#booking" class="text-xs font-bold bg-white/10 hover:bg-cyan-600 px-4 py-2 rounded-xl transition">Explore Route</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Dubai -->
+                <div class="reveal-element group bg-slate-900 rounded-3xl overflow-hidden border border-white/10 hover:border-blue-500/50 transition duration-300">
+                    <div class="relative h-56 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=800&q=80" alt="Dubai, UAE" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                        <span class="absolute top-4 left-4 bg-slate-950/80 backdrop-blur-md text-xs font-semibold px-3 py-1 rounded-full text-slate-300">Middle East</span>
+                    </div>
+                    <div class="p-6">
+                        <h4 class="text-xl font-bold text-white mb-1">Dubai, UAE</h4>
+                        <p class="text-slate-400 text-xs font-medium mb-3">JFK → DXB · 12h 45m · Nonstop</p>
+                        <div class="flex items-center justify-between mt-6">
+                            <span class="text-sm font-bold text-blue-400">From $550 <span class="text-xs text-slate-500 font-normal">/ seat</span></span>
+                            <a href="#booking" class="text-xs font-bold bg-white/10 hover:bg-blue-600 px-4 py-2 rounded-xl transition">Explore Route</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-center reveal-element">
+                <a href="#booking" class="inline-flex items-center gap-2 border border-white/20 hover:border-blue-400 text-sm font-bold text-white px-8 py-3 rounded-full transition">
+                    Explore All Destinations <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- 9. Reviews Section -->
+    <section id="reviews" class="py-24 max-w-7xl mx-auto px-6">
+        <div class="text-center mb-16 reveal-element">
+            <span class="text-xs font-bold uppercase tracking-widest text-blue-400 bg-blue-500/10 px-4 py-1.5 rounded-full border border-blue-500/20">TRAVELER STORIES</span>
+            <h2 class="text-3xl sm:text-5xl font-extrabold text-white mt-4 mb-2">What Our Travelers Say</h2>
+            <p class="text-slate-400 text-sm sm:text-base">Discover why travelers choose SkyBound for journeys that go beyond the ordinary.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div class="reveal-element p-8 rounded-3xl bg-slate-900/50 border border-white/10">
+                <div class="text-amber-400 text-base mb-4 tracking-widest">★★★★★</div>
+                <p class="text-slate-300 text-base leading-relaxed mb-6 font-light">
+                    “The entire journey felt effortless. From the booking experience to the comfort onboard, every detail was thoughtfully handled.”
+                </p>
+                <div>
+                    <h5 class="font-bold text-white text-sm">Sarah Jenkins</h5>
+                    <p class="text-xs text-slate-400">Verified Traveler</p>
+                </div>
+            </div>
+
+            <div class="reveal-element p-8 rounded-3xl bg-slate-900/50 border border-white/10">
+                <div class="text-amber-400 text-base mb-4 tracking-widest">★★★★★</div>
+                <p class="text-slate-300 text-base leading-relaxed mb-6 font-light">
+                    “The concierge team made organizing my trip incredibly simple. Everything was prepared exactly the way I requested.”
+                </p>
+                <div>
+                    <h5 class="font-bold text-white text-sm">Marcus Chen</h5>
+                    <p class="text-xs text-slate-400">Verified Traveler</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 10. Concierge Section -->
+    <section id="concierge" class="py-24 bg-[#0a0f1d]/70 border-y border-white/5">
+        <div class="max-w-4xl mx-auto px-6">
+            <div class="reveal-element bg-slate-900/90 p-8 sm:p-12 rounded-3xl border border-white/10 shadow-2xl">
+                <div class="text-center mb-10">
+                    <span class="text-xs font-bold uppercase tracking-widest text-cyan-400 bg-cyan-500/10 px-4 py-1.5 rounded-full border border-cyan-500/20">PRIVATE CONCIERGE</span>
+                    <h2 class="text-3xl sm:text-4xl font-extrabold text-white mt-4 mb-2">Your Journey, Personalized</h2>
+                    <p class="text-slate-400 text-sm max-w-lg mx-auto">Tell us what you need and our concierge team will help create a travel experience tailored to your plans.</p>
+                </div>
+
+                <form class="space-y-4" onsubmit="event.preventDefault(); alert('Thank you! Your travel requirements have been submitted.');">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-400 mb-1">Full Name</label>
+                            <input type="text" required placeholder="Full Name" class="w-full px-4 py-3 rounded-xl bg-slate-950 border border-white/10 text-white text-sm outline-none focus:border-cyan-400">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-400 mb-1">Email Address</label>
+                            <input type="email" required placeholder="Email Address" class="w-full px-4 py-3 rounded-xl bg-slate-950 border border-white/10 text-white text-sm outline-none focus:border-cyan-400">
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-400 mb-1">Phone / WhatsApp</label>
+                            <input type="text" placeholder="+1 (555) 000-0000" class="w-full px-4 py-3 rounded-xl bg-slate-950 border border-white/10 text-white text-sm outline-none focus:border-cyan-400">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-400 mb-1">Travel Date</label>
+                            <input type="date" value="2026-10-15" class="w-full px-4 py-3 rounded-xl bg-slate-950 border border-white/10 text-white text-sm outline-none focus:border-cyan-400">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-400 mb-1">Number of Travelers</label>
+                            <input type="number" min="1" value="1" class="w-full px-4 py-3 rounded-xl bg-slate-950 border border-white/10 text-white text-sm outline-none focus:border-cyan-400">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-400 mb-1">Cabin Preference</label>
+                        <select class="w-full px-4 py-3 rounded-xl bg-slate-950 border border-white/10 text-white text-sm outline-none focus:border-cyan-400 [&>option]:bg-slate-950">
+                            <option>Business Class</option>
+                            <option>First Class</option>
+                            <option>Economy Class</option>
+                            <option>Private Charter</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-400 mb-1">Route & Preferences</label>
+                        <textarea rows="3" placeholder="Tell us your route, travel dates, passenger count, preferred cabin, and any special requirements." class="w-full px-4 py-3 rounded-xl bg-slate-950 border border-white/10 text-white text-sm outline-none focus:border-cyan-400 resize-none"></textarea>
+                    </div>
+                    <button type="submit" class="w-full py-4 rounded-xl bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-500 hover:to-cyan-400 text-white font-bold text-sm transition shadow-lg shadow-blue-500/25">
+                        Send Concierge Inquiry
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- 11. FAQ -->
+    <section class="py-24 max-w-4xl mx-auto px-6">
+        <div class="text-center mb-16 reveal-element">
+            <span class="text-xs font-bold uppercase tracking-widest text-blue-400 bg-blue-500/10 px-4 py-1.5 rounded-full border border-blue-500/20">FREQUENTLY ASKED QUESTIONS</span>
+            <h2 class="text-3xl sm:text-5xl font-extrabold text-white mt-4">Helpful Details</h2>
+        </div>
+
+        <div class="space-y-4">
+            <div class="reveal-element p-5 rounded-2xl bg-slate-900/50 border border-white/10">
+                <button class="w-full text-left font-bold text-white text-sm sm:text-base flex justify-between items-center focus:outline-none" onclick="toggleFaq(this)">
+                    <span>Can I change my booking?</span>
+                    <i data-lucide="chevron-down" class="w-4 h-4 transition-transform duration-300"></i>
+                </button>
+                <div class="text-slate-400 text-xs sm:text-sm mt-3 leading-relaxed hidden">
+                    Booking changes depend on the selected fare and route. Our support team can help you understand the available options.
+                </div>
+            </div>
+
+            <div class="reveal-element p-5 rounded-2xl bg-slate-900/50 border border-white/10">
+                <button class="w-full text-left font-bold text-white text-sm sm:text-base flex justify-between items-center focus:outline-none" onclick="toggleFaq(this)">
+                    <span>What destinations do you serve?</span>
+                    <i data-lucide="chevron-down" class="w-4 h-4 transition-transform duration-300"></i>
+                </button>
+                <div class="text-slate-400 text-xs sm:text-sm mt-3 leading-relaxed hidden">
+                    SkyBound connects travelers to more than 150 destinations across major global regions.
+                </div>
+            </div>
+
+            <div class="reveal-element p-5 rounded-2xl bg-slate-900/50 border border-white/10">
+                <button class="w-full text-left font-bold text-white text-sm sm:text-base flex justify-between items-center focus:outline-none" onclick="toggleFaq(this)">
+                    <span>Can I request special meals?</span>
+                    <i data-lucide="chevron-down" class="w-4 h-4 transition-transform duration-300"></i>
+                </button>
+                <div class="text-slate-400 text-xs sm:text-sm mt-3 leading-relaxed hidden">
+                    Yes. You can share dietary requirements and meal preferences when making your booking or contacting our concierge team.
+                </div>
+            </div>
+
+            <div class="reveal-element p-5 rounded-2xl bg-slate-900/50 border border-white/10">
+                <button class="w-full text-left font-bold text-white text-sm sm:text-base flex justify-between items-center focus:outline-none" onclick="toggleFaq(this)">
+                    <span>Do you offer business and first-class travel?</span>
+                    <i data-lucide="chevron-down" class="w-4 h-4 transition-transform duration-300"></i>
+                </button>
+                <div class="text-slate-400 text-xs sm:text-sm mt-3 leading-relaxed hidden">
+                    Selected routes offer premium cabin options. Available cabins are displayed during the booking process.
+                </div>
+            </div>
+
+            <div class="reveal-element p-5 rounded-2xl bg-slate-900/50 border border-white/10">
+                <button class="w-full text-left font-bold text-white text-sm sm:text-base flex justify-between items-center focus:outline-none" onclick="toggleFaq(this)">
+                    <span>How does the concierge service work?</span>
+                    <i data-lucide="chevron-down" class="w-4 h-4 transition-transform duration-300"></i>
+                </button>
+                <div class="text-slate-400 text-xs sm:text-sm mt-3 leading-relaxed hidden">
+                    Simply submit your travel requirements through the concierge form and our team will contact you with the available options.
+                </div>
+            </div>
+
+            <div class="reveal-element p-5 rounded-2xl bg-slate-900/50 border border-white/10">
+                <button class="w-full text-left font-bold text-white text-sm sm:text-base flex justify-between items-center focus:outline-none" onclick="toggleFaq(this)">
+                    <span>What payment methods are accepted?</span>
+                    <i data-lucide="chevron-down" class="w-4 h-4 transition-transform duration-300"></i>
+                </button>
+                <div class="text-slate-400 text-xs sm:text-sm mt-3 leading-relaxed hidden">
+                    Available payment methods are displayed during checkout and may vary depending on your location and booking.
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 12. Final CTA -->
+    <section class="py-24 bg-gradient-to-b from-blue-900/30 to-[#070b14] border-t border-white/5">
+        <div class="max-w-4xl mx-auto px-6 text-center reveal-element">
+            <span class="text-xs font-bold uppercase tracking-widest text-cyan-400 bg-cyan-500/10 px-4 py-1.5 rounded-full border border-cyan-500/20">READY FOR YOUR NEXT JOURNEY?</span>
+            <h2 class="text-3xl sm:text-5xl font-extrabold text-white mt-4 mb-4">Go Further. Travel Better.</h2>
+            <p class="text-slate-300 text-base max-w-xl mx-auto mb-8 font-light">Discover premium travel experiences designed around the way you want to journey.</p>
+            <div class="flex flex-wrap items-center justify-center gap-4">
+                <a href="#destinations" class="bg-blue-600 hover:bg-blue-500 text-white font-semibold px-8 py-3.5 rounded-xl transition">Explore Destinations</a>
+                <a href="#concierge" class="border border-white/20 hover:bg-white/10 text-white font-semibold px-8 py-3.5 rounded-xl transition">Talk to Concierge</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- 13. Footer -->
+    <footer class="pt-16 pb-12 bg-[#05070d] border-t border-white/10 text-slate-400 text-sm">
+        <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-5 gap-10 mb-12">
+            <div class="md:col-span-2">
+                <div class="flex items-center gap-2 font-extrabold text-xl text-white mb-3">
+                    <i data-lucide="plane" class="text-blue-500 w-5 h-5 -rotate-45"></i> SkyBound
+                </div>
+                <p class="text-slate-400 text-xs sm:text-sm max-w-sm leading-relaxed mb-4">
+                    Travel beyond the ordinary with seamless journeys, exceptional comfort, and personalized service.
+                </p>
+                <div class="flex items-center gap-3">
+                    <span class="text-xs uppercase font-semibold text-slate-500">Follow SkyBound:</span>
+                    <a href="#" class="p-2 rounded-lg bg-white/5 hover:text-white transition"><i data-lucide="twitter" class="w-4 h-4"></i></a>
+                    <a href="#" class="p-2 rounded-lg bg-white/5 hover:text-white transition"><i data-lucide="instagram" class="w-4 h-4"></i></a>
+                    <a href="#" class="p-2 rounded-lg bg-white/5 hover:text-white transition"><i data-lucide="linkedin" class="w-4 h-4"></i></a>
+                </div>
+            </div>
+
+            <div>
+                <h5 class="text-xs font-bold uppercase tracking-wider text-white mb-4">EXPLORE</h5>
+                <ul class="space-y-2 text-xs">
+                    <li><a href="#destinations" class="hover:text-white transition">Destinations</a></li>
+                    <li><a href="#booking" class="hover:text-white transition">Flights</a></li>
+                    <li><a href="#experience" class="hover:text-white transition">Travel Experience</a></li>
+                    <li><a href="#concierge" class="hover:text-white transition">Concierge</a></li>
+                </ul>
+            </div>
+
+            <div>
+                <h5 class="text-xs font-bold uppercase tracking-wider text-white mb-4">COMPANY</h5>
+                <ul class="space-y-2 text-xs">
+                    <li><a href="#about" class="hover:text-white transition">About Us</a></li>
+                    <li><a href="#" class="hover:text-white transition">Careers</a></li>
+                    <li><a href="#concierge" class="hover:text-white transition">Contact</a></li>
+                    <li><a href="#" class="hover:text-white transition">Press</a></li>
+                </ul>
+            </div>
+
+            <div>
+                <h5 class="text-xs font-bold uppercase tracking-wider text-white mb-4">SUPPORT</h5>
+                <ul class="space-y-2 text-xs">
+                    <li><a href="#" class="hover:text-white transition">Help Center</a></li>
+                    <li><a href="#" class="hover:text-white transition">FAQs</a></li>
+                    <li><a href="#booking" class="hover:text-white transition">Booking Support</a></li>
+                    <li><a href="#" class="hover:text-white transition">Privacy Policy</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="max-w-7xl mx-auto px-6 pt-8 border-t border-white/5 text-center text-xs text-slate-500">
+            <p>© 2026 WebNova Studio · RR Web Designers · All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script>
+        lucide.createIcons();
+
+        // Responsive Hamburger Toggle
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const mobileMenu = document.getElementById('mobileMenu');
+        const mobileLinks = document.querySelectorAll('.mobile-link');
+
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        mobileLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+            });
+        });
+
+        // FAQ Toggle
+        function toggleFaq(button) {
+            const content = button.nextElementSibling;
+            const icon = button.querySelector('svg');
+            content.classList.toggle('hidden');
+            if (icon) {
+                icon.classList.toggle('rotate-180');
+            }
+        }
+
+        // Scroll Observer
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.reveal-element').forEach(el => {
+            revealObserver.observe(el);
+        });
+    </script>
+</body>
+</html>
